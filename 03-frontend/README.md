@@ -475,4 +475,3 @@ function handleResponse(response) {
 - [Handling Cookies in JavaScript](https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie)
 - [DOM Manipulation](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)
 - [FormData API](https://developer.mozilla.org/en-US/docs/Web/API/FormData)
-```
