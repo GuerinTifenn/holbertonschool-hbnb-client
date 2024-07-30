@@ -6,11 +6,8 @@ body {
 }
 
 header {
-    background-color: #f8f8f8;
+    background-color: #F5F5F7;
     padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     border-bottom: 1px solid #ddd;
 }
 
@@ -20,26 +17,34 @@ header {
 
 nav a {
     text-decoration: none;
-    color: #333;
+    color: black;
     font-weight: bold;
     margin-left: 20px;
 }
 
+nav {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
 main {
     padding: 20px;
 }
 
 h1, h2 {
     margin-top: 0;
+    color: #333;
 }
 
 footer {
-    background-color: #f8f8f8;
+    background-color: #F5F5F7;
     text-align: center;
     padding: 10px;
     position: fixed;
     width: 100%;
     bottom: 0;
+    color: black;
     border-top: 1px solid #ddd;
 }
 
@@ -49,11 +54,15 @@ footer {
     border-radius: 10px;
     padding: 10px;
     margin: 20px 0;
+    text-align: center;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .place-image {
     width: 100%;
-    height: auto;
+    height: 200px;
+    object-fit: cover;
     border-radius: 10px;
 }
 
@@ -68,32 +77,49 @@ footer {
     margin: 10px 0;
 }
 
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.login-button {
+    margin-top: 0px;
+}
+
 #country-filter {
     margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
 }
 
 #review-form {
     display: flex;
     flex-direction: column;
 }
-
-#review-form label,
-#login-form label {
+#login-form h2 {
+    text-align: center;
+}
+#review-form label {
     margin-top: 10px;
 }
 
 #review-form textarea,
-#login-form input {
-    margin-top: 5px;
+#login-form input,
+#review-form select {
     padding: 10px;
     font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
 
 button {
     margin-top: 20px;
     padding: 10px;
     font-size: 16px;
-    background-color: #333;
+    background-color: #212121;
     color: white;
     border: none;
     border-radius: 5px;
@@ -101,5 +127,5 @@ button {
 }
 
 button:hover {
-    background-color: #555;
+    background-color: #212121;
 }
