@@ -17,13 +17,20 @@ with open('data/places.json') as f:
 # In-memory storage for new reviews
 new_reviews = []
 
+@app.after_request
+def add_cors_headers(response):
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
+    response.headers.add("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS")
+    return response
+
 @app.route('/login', methods=['POST'])
 def login():
     email = request.json.get('email')
     password = request.json.get('password')
 
     user = next((u for u in users if u['email'] == email and u['password'] == password), None)
-    
+
     if not user:
         print(f"User not found or invalid password for: {email}")
         return jsonify({"msg": "Invalid credentials"}), 401
@@ -44,6 +51,7 @@ def get_places():
             "city_name": place['city_name'],
             "country_code": place['country_code'],
             "country_name": place['country_name']
+            # "amenities": place['amenities']
         }
         for place in places
     ]
