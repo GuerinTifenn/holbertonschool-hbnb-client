@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            const response = await fetch('https://your-api-url/login', {
+            const response = await fetch('http://127.0.0.1:5000/login', {  // Remplacez par l'URL réelle de votre API
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.cookie = `token=${data.access_token}; path=/`;
                 window.location.href = 'index.html';
             } else {
-                document.getElementById('error-message').innerText = 'Login failed: ' + response.statusText;
+                document.getElementById('error-message').innerText = 'Login failed: An error has occured'
             }
         });
     }
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
             event.preventDefault();
             const reviewText = document.getElementById('review').value;
 
-            const response = await fetch(`https://your-api-url/places/${placeId}/reviews`, {
+            const response = await fetch(`http://127.0.0.1:5000/places/${placeId}/reviews`, {  // Remplacez par l'URL réelle de votre API
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         checkAuthentication();
 
         async function fetchPlaces(token) {
-            const response = await fetch('https://your-api-url/places', {
+            const response = await fetch('http://127.0.0.1:5000/places', {  // Remplacez par l'URL réelle de votre API
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -82,11 +82,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const placeCard = document.createElement('div');
                 placeCard.className = 'place-card';
                 placeCard.innerHTML = `
-                    <img src="${place.image}" alt="${place.name}" class="place-image">
-                    <h2>${place.name}</h2>
-                    <p>${place.location}</p>
-                    <p>${place.price_per_night} per night</p>
-                    <a href="place.html?id=${place.id}" class="details-button">View Details</a>
+                    <ul>
+                        <li>Host: ${place.host_name}</li>
+                        <li>Price per night: $${place.price_per_night}</li>
+                        <li>Location: ${place.city_name}, ${place.country_name}</li>
+                        <li>Description: ${place.description}</li>
+                    </ul>
                 `;
                 placesList.appendChild(placeCard);
             });
@@ -124,9 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
             fetchPlaceDetails(token, placeId);
         }
     }
-
     async function fetchPlaceDetails(token, placeId) {
-        const response = await fetch(`https://your-api-url/places/${placeId}`, {
+        const response = await fetch(`http://127.0.0.1:5000/places/${placeId}`, {  // Remplacez par l'URL réelle de votre API
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
