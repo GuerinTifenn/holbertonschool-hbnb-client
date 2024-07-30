@@ -51,7 +51,6 @@ def get_places():
             "city_name": place['city_name'],
             "country_code": place['country_code'],
             "country_name": place['country_name']
-            # "amenities": place['amenities']
         }
         for place in places
     ]
