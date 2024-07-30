@@ -28,37 +28,50 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if (reviewForm && placeId) {
-        if (!token) {
-            window.location.href = 'index.html';
+    // if (reviewForm && placeId) {
+    //     if (!token) {
+    //         window.location.href = 'index.html';
+    //     }
+
+    //     document.getElementById('place').value = placeId;
+
+    //     reviewForm.addEventListener('submit', async (event) => {
+    //         event.preventDefault();
+    //         const reviewText = document.getElementById('review').value;
+
+    //         const response = await fetch(`http://127.0.0.1:5000/places/${placeId}/reviews`, {  // Remplacez par l'URL réelle de votre API
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': `Bearer ${token}`
+    //             },
+    //             body: JSON.stringify({ review: reviewText })
+    //         });
+
+    //         if (response.ok) {
+    //             alert('Review submitted successfully!');
+    //             reviewForm.reset();
+    //         } else {
+    //             alert('Failed to submit review');
+    //         }
+    //     });
+    // }
+
+
+    function checkAuthentication() {
+        const token = getCookie('token');
+        const loginLink = document.getElementById('login-link');
+        if (token) {
+            loginLink.style.display = 'none';
         }
-
-        document.getElementById('place').value = placeId;
-
-        reviewForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const reviewText = document.getElementById('review').value;
-
-            const response = await fetch(`http://127.0.0.1:5000/places/${placeId}/reviews`, {  // Remplacez par l'URL réelle de votre API
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ review: reviewText })
-            });
-
-            if (response.ok) {
-                alert('Review submitted successfully!');
-                reviewForm.reset();
-            } else {
-                alert('Failed to submit review');
-            }
-        });
     }
 
+    checkAuthentication();
+
+
+// All places part //
     if (document.getElementById('places-list')) {
-        checkAuthentication();
+        let places = []
 
         async function fetchPlaces(token) {
             const response = await fetch('http://127.0.0.1:5000/places', {  // Remplacez par l'URL réelle de votre API
@@ -69,10 +82,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (response.ok) {
-                const places = await response.json();
+                places = await response.json();
                 displayPlaces(places);
             }
         }
+
+        fetchPlaces()
 
         function displayPlaces(places) {
             const placesList = document.getElementById('places-list');
@@ -82,39 +97,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 const placeCard = document.createElement('div');
                 placeCard.className = 'place-card';
                 placeCard.innerHTML = `
-                    <ul>
-                        <li>Host: ${place.host_name}</li>
-                        <li>Price per night: $${place.price_per_night}</li>
-                        <li>Location: ${place.city_name}, ${place.country_name}</li>
-                        <li>Description: ${place.description}</li>
-                    </ul>
+                <h2>${place.description}</h2>
+                <p>Price per night: $ ${place.price_per_night}</p>
+                <p>Location: ${place.city_name}, ${place.country_name}</p>
+                <button id="details-button" data-place-id="${place.id}">View details</button>
                 `;
                 placesList.appendChild(placeCard);
             });
+            goToPlaceDetails()
         }
 
-        function checkAuthentication() {
-            const token = getCookie('token');
-            const loginLink = document.getElementById('login-link');
-            if (!token) {
-                loginLink.style.display = 'block';
+        function goToPlaceDetails () {
+            const buttons = document.querySelectorAll('#details-button')
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.getAttribute('data-place-id')
+                    window.location.href = `place.html#${targetId}`;
+                })
+            })
+        }
+
+        function filterPlacesByCountry(country) {
+            if (country === "all") {
+                displayPlaces(places);
             } else {
-                loginLink.style.display = 'none';
-                fetchPlaces(token);
+                const filteredPlaces = places.filter(place => place.country_name === country);
+                displayPlaces(filteredPlaces);
             }
         }
 
-        document.getElementById('country-filter').addEventListener('change', (event) => {
-            const selectedCountry = event.target.value;
-            const places = document.querySelectorAll('.place-card');
 
-            places.forEach(place => {
-                if (selectedCountry === '' || place.querySelector('p').innerText.includes(selectedCountry)) {
-                    place.style.display = 'block';
-                } else {
-                    place.style.display = 'none';
-                }
-            });
+        document.getElementById('country-filter').addEventListener('change', (event) => {
+            filterPlacesByCountry(event.target.value);
         });
     }
 
@@ -125,6 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
             fetchPlaceDetails(token, placeId);
         }
     }
+
     async function fetchPlaceDetails(token, placeId) {
         const response = await fetch(`http://127.0.0.1:5000/places/${placeId}`, {  // Remplacez par l'URL réelle de votre API
             method: 'GET',

@@ -47,6 +47,11 @@ footer {
     color: black;
     border-top: 1px solid #ddd;
 }
+#places-list{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+}
 
 #places-list .place-card,
 .review-card {
@@ -77,6 +82,8 @@ footer {
     margin: 10px 0;
 }
 
+
+.filter-container,
 .form-container {
     display: flex;
     justify-content: center;
@@ -89,7 +96,6 @@ footer {
 }
 
 #country-filter {
-    margin-bottom: 20px;
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #ddd;
@@ -99,9 +105,11 @@ footer {
     display: flex;
     flex-direction: column;
 }
-#login-form h2 {
+
+.title {
     text-align: center;
 }
+
 #review-form label {
     margin-top: 10px;
 }
