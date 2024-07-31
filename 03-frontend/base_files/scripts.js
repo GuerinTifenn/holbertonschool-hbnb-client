@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');
 
+    // Récupère le token stocké dans les cookies
     const token = getCookie('token');
 
     if (loginForm) {
@@ -9,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
+            // Envoie la requête de login
             const response = await fetch('http://127.0.0.1:5000/login', {
                 method: 'POST',
                 headers: {
@@ -19,15 +21,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 const data = await response.json();
+                // Stocke le token dans les cookies
                 document.cookie = `token=${data.access_token}; path=/`;
                 window.location.href = 'index.html';
             } else {
-                document.getElementById('error-message').innerText = 'Login failed: An error has occured'
+                document.getElementById('error-message').innerText = 'Login failed: An error has occurred';
             }
         });
     }
 
-
+    // Vérifie si l'utilisateur est authentifié
     function checkAuthentication() {
         const token = getCookie('token');
         const loginLink = document.getElementById('login-link');
@@ -37,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     checkAuthentication();
 
+    // Fonction pour récupérer les cookies
     function getCookie(name) {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
@@ -45,9 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // All places part //
     if (document.getElementById('places-list')) {
-        //checkAuthentication();
         let places = []
 
+        // Récupère les lieux avec le token dans l'en-tête Authorization
         async function fetchPlaces(token) {
             const response = await fetch('http://127.0.0.1:5000/places', {
                 method: 'GET',
@@ -62,8 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        fetchPlaces()
+        fetchPlaces();
 
+        // Affiche les lieux récupérés
         function displayPlaces(places) {
             const placesList = document.getElementById('places-list');
             placesList.innerHTML = '';
@@ -79,19 +84,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
                 placesList.appendChild(placeCard);
             });
-            goToPlaceDetails()
+            goToPlaceDetails();
         }
 
-        function goToPlaceDetails () {
-            const buttons = document.querySelectorAll('#details-button')
+        // Ajoute les événements pour naviguer vers les détails d'un lieu
+        function goToPlaceDetails() {
+            const buttons = document.querySelectorAll('#details-button');
             buttons.forEach(button => {
                 button.addEventListener('click', () => {
-                    const targetId = button.getAttribute('data-place-id')
+                    const targetId = button.getAttribute('data-place-id');
                     window.location.href = `place.html?id=${targetId}`;
-                })
-            })
+                });
+            });
         }
 
+        // Filtre les lieux par pays
         function filterPlacesByCountry(country) {
             if (country === "all") {
                 displayPlaces(places);
@@ -100,7 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 displayPlaces(filteredPlaces);
             }
         }
-
 
         document.getElementById('country-filter').addEventListener('change', (event) => {
             filterPlacesByCountry(event.target.value);
@@ -112,26 +118,28 @@ document.addEventListener('DOMContentLoaded', () => {
         return urlParams.get('id');
     }
 
+    // Charge le formulaire d'ajout de revue
     async function loadAddReview() {
         const response = await fetch('add_review.html');
-                const html = await response.text();
-                document.getElementById('add-review').innerHTML = html;
-                const reviewForm = document.getElementById('review-form');
-                console.log('reviieieie', reviewForm)
-                createReview(reviewForm);
+        const html = await response.text();
+        document.getElementById('add-review').innerHTML = html;
+        const reviewForm = document.getElementById('review-form');
+        createReview(reviewForm);
     }
 
+    // Partie pour afficher les détails d'un lieu
     if (document.getElementById('place-details')) {
         const placeId = getIdFromUrl();
-            if (placeId) {
-                fetchPlaceDetails(placeId);
-                loadAddReview()
-            }
+        if (placeId) {
+            fetchPlaceDetails(placeId);
+            loadAddReview();
+        }
         if (!token) {
             document.getElementById('add-review').style.display = 'none';
         }
     }
 
+    // Récupère les détails d'un lieu avec le token dans l'en-tête Authorization
     async function fetchPlaceDetails(placeId) {
         const response = await fetch(`http://127.0.0.1:5000/places/${placeId}`, {
             method: 'GET',
@@ -143,10 +151,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (response.ok) {
             const place = await response.json();
             displayPlaceDetails(place);
-            displayReviews(place)
+            displayReviews(place);
         }
     }
 
+    // Affiche les détails d'un lieu
     function displayPlaceDetails(place) {
         const placeDetails = document.getElementById('place-details');
         placeDetails.innerHTML = `
@@ -163,10 +172,11 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
+    // Affiche les revues d'un lieu
     function displayReviews(place) {
         const reviewTitle = document.getElementById('title');
         if (place.reviews.length) {
-            reviewTitle.innerHTML = '<h2 class="title">Reviews</h2>'
+            reviewTitle.innerHTML = '<h2 class="title">Reviews</h2>';
         } else {
             reviewTitle.innerHTML = '';
         }
@@ -186,8 +196,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getStars(rating) {
-        const fullStar = '★'; // Unicode pour une étoile pleine
-        const emptyStar = '☆'; // Unicode pour une étoile vide
+        const fullStar = '★';
+        const emptyStar = '☆';
         let stars = '';
 
         for (let i = 1; i <= 5; i++) {
@@ -197,37 +207,34 @@ document.addEventListener('DOMContentLoaded', () => {
         return stars;
     }
 
-
-    function createReview (reviewForm) {
+    // Crée une nouvelle revue avec le token dans l'en-tête Authorization
+    function createReview(reviewForm) {
         if (reviewForm) {
             const placeId = getIdFromUrl();
-            console.log(placeId)
-          if (placeId) {
-            console.log('if')
-            reviewForm.addEventListener('submit', async (event) => {
-                event.preventDefault();
-                const reviewText = document.getElementById('review-text').value;
-                const ratingValue = document.getElementById('review-rating').value;
+            if (placeId) {
+                reviewForm.addEventListener('submit', async (event) => {
+                    event.preventDefault();
+                    const reviewText = document.getElementById('review-text').value;
+                    const ratingValue = document.getElementById('review-rating').value;
 
-                const response = await fetch(`http://127.0.0.1:5000/places/${placeId}/reviews`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ review: reviewText, rating: ratingValue, place_id: placeId })
+                    const response = await fetch(`http://127.0.0.1:5000/places/${placeId}/reviews`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ review: reviewText, rating: ratingValue, place_id: placeId })
+                    });
+
+                    if (response.ok) {
+                        alert('Review submitted successfully!');
+                        reviewForm.reset();
+                        fetchPlaceDetails(placeId);
+                    } else {
+                        alert('Failed to submit review');
+                    }
                 });
-
-                if (response.ok) {
-                    alert('Review submitted successfully!');
-                    reviewForm.reset();
-                    fetchPlaceDetails(placeId);
-                } else {
-                    alert('Failed to submit review');
-                }
-            });
-          }
+            }
         }
     }
-
 });
