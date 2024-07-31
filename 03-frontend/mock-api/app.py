@@ -1,12 +1,15 @@
+from uuid import uuid4
 from flask import Flask, request, jsonify
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_cors import CORS
 import json
-from uuid import uuid4
+
 
 app = Flask(__name__)
 app.config.from_object('config.Config')
 
 jwt = JWTManager(app)
+CORS(app) # Enable CORS for all routes
 
 with open('data/users.json') as f:
     users = json.load(f)
@@ -16,13 +19,6 @@ with open('data/places.json') as f:
 
 # In-memory storage for new reviews
 new_reviews = []
-
-@app.after_request
-def add_cors_headers(response):
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
-    response.headers.add("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS")
-    return response
 
 @app.route('/login', methods=['POST'])
 def login():
