@@ -26,11 +26,12 @@ nav a {
 }
 
 nav {
-    display:flex;
+    display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
 }
+
 main {
     padding: 20px;
 }
@@ -49,7 +50,8 @@ footer {
     border-top: 1px solid #ddd;
     margin-top: auto;
 }
-#places-list{
+
+#places-list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;
@@ -100,7 +102,6 @@ footer {
 .review-card {
     margin: 10px 0;
 }
-
 
 .filter-container,
 .form-container {
@@ -155,4 +156,15 @@ button {
 
 button:hover {
     background-color: #212121;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
 }
