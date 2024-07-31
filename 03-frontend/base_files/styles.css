@@ -72,6 +72,7 @@ footer {
     list-style-type: none;
     gap: 5px;
     display: grid;
+    padding: 0;
 }
 
 #places-list .place-card,
@@ -79,10 +80,19 @@ footer {
     border: 1px solid #ddd;
     border-radius: 10px;
     padding: 10px;
-    margin: 20px 0;
+    margin: 20px auto;
     text-align: center;
     background-color: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.place-card {
+    width: 350px;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .place-image {

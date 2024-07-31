@@ -174,25 +174,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Affiche les revues d'un lieu
     function displayReviews(place) {
-        const reviewTitle = document.getElementById('title');
-        if (place.reviews.length) {
-            reviewTitle.innerHTML = '<h2 class="title">Reviews</h2>';
-        } else {
-            reviewTitle.innerHTML = '';
-        }
+        const reviewSection = document.getElementById('reviews');
         const displayReviews = document.getElementById('review-card');
         displayReviews.innerHTML = '';
-        let reviewsHtml = '';
-        place.reviews.forEach(review => {
-            reviewsHtml += `
-            <div class="review-card">
-                <p><strong>${review.user_name}</strong></p>
-                <p>${review.comment}</p>
-                <p>Rating: ${getStars(review.rating)}</p>
-            </div>
-            `;
-        });
-        displayReviews.innerHTML = reviewsHtml;
+
+        if (place.reviews.length > 0) {
+            // Ajouter le titre uniquement s'il y a des avis
+            const reviewTitle = document.createElement('h2');
+            reviewTitle.textContent = 'Reviews';
+            reviewSection.insertBefore(reviewTitle, displayReviews);
+
+            let reviewsHtml = '';
+            place.reviews.forEach(review => {
+                reviewsHtml += `
+                <div class="review-card">
+                    <p><strong>${review.user_name}</strong></p>
+                    <p>${review.comment}</p>
+                    <p>Rating: ${getStars(review.rating)}</p>
+                </div>
+                `;
+            });
+            displayReviews.innerHTML = reviewsHtml;
+        }
     }
 
     function getStars(rating) {
