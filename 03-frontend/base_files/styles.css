@@ -3,6 +3,9 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
@@ -41,16 +44,32 @@ footer {
     background-color: #F5F5F7;
     text-align: center;
     padding: 10px;
-    position: fixed;
     width: 100%;
-    bottom: 0;
     color: black;
     border-top: 1px solid #ddd;
+    margin-top: auto;
 }
 #places-list{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;
+}
+
+.place-detail-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 20px 0;
+    text-align: center;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+}
+
+.place-detail-card ul {
+    list-style-type: none;
+    gap: 5px;
+    display: grid;
 }
 
 #places-list .place-card,

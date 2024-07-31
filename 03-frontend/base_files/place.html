@@ -6,6 +6,7 @@
     <title>Place Details</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="icon.png"/>
+    <script src="scripts.js"></script>
 </head>
 <body>
     <header>
@@ -18,42 +19,16 @@
     </header>
     <main>
         <section id="place-details">
-            <div class="place-info">
-
-            </div>
-
+            <div class="place-info"></div>
         </section>
-        <h2>Reviews</h2>
         <section id="reviews">
-            <div class="review-card">
-                <p>Jane Smith: Great place to stay!</p>
-                <p>Rating: ★★★★☆</p>
-            </div>
-            <div class="review-card">
-                <p>Robert Brown: Amazing location and very comfortable.</p>
-                <p>Rating: ★★★★★</p>
-            </div>
+            <div id="title"></div>
+            <div id ="review-card"></div>
         </section>
-        <section id="add-review" class="add-review">
-            <h2>Add a Review</h2>
-            <form id="review-form" class="form">
-                <label for="review-text">Your Review:</label>
-                <textarea id="review-text" name="review-text" required></textarea>
-                <label for="review-rating">Rating:</label>
-                <select id="review-rating" name="review-rating">
-                    <option value="1">1 Star</option>
-                    <option value="2">2 Stars</option>
-                    <option value="3">3 Stars</option>
-                    <option value="4">4 Stars</option>
-                    <option value="5">5 Stars</option>
-                </select>
-                <button type="submit">Submit Review</button>
-            </form>
-        </section>
+        <section id="add-review" class="add-review"></section>
     </main>
     <footer>
         <p>&copy; 2024 HBnB Evolution. All rights reserved.</p>
     </footer>
-    <script src="scripts.js"></script>
 </body>
 </html>
