@@ -173,31 +173,39 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
-    // Affiche les revues d'un lieu
-    function displayReviews(place) {
-        const reviewSection = document.getElementById('reviews');
-        const displayReviews = document.getElementById('review-card');
-        displayReviews.innerHTML = '';
+// Affiche les revues d'un lieu
+function displayReviews(place) {
+    const reviewSection = document.getElementById('reviews');
+    const displayReviews = document.getElementById('review-card');
 
-        if (place.reviews.length > 0) {
-            // Ajouter le titre uniquement s'il y a des avis
-            const reviewTitle = document.createElement('h2');
-            reviewTitle.textContent = 'Reviews';
-            reviewSection.insertBefore(reviewTitle, displayReviews);
+    // Vider le conteneur des avis
+    displayReviews.innerHTML = '';
 
-            let reviewsHtml = '';
-            place.reviews.forEach(review => {
-                reviewsHtml += `
-                <div class="review-card">
-                    <p><strong>${review.user_name}</strong></p>
-                    <p>${review.comment}</p>
-                    <p>Rating: ${getStars(review.rating)}</p>
-                </div>
-                `;
-            });
-            displayReviews.innerHTML = reviewsHtml;
-        }
+    // Supprimer tout titre existant
+    const existingTitle = document.querySelector('#reviews h2');
+    if (existingTitle) {
+        existingTitle.remove();
     }
+
+    if (place.reviews.length > 0) {
+        // Ajouter le titre uniquement s'il y a des avis
+        const reviewTitle = document.createElement('h2');
+        reviewTitle.textContent = 'Reviews';
+        reviewSection.insertBefore(reviewTitle, displayReviews);
+
+        let reviewsHtml = '';
+        place.reviews.forEach(review => {
+            reviewsHtml += `
+            <div class="review-card">
+                <p><strong>${review.user_name}</strong></p>
+                <p>${review.comment}</p>
+                <p>Rating: ${getStars(review.rating)}</p>
+            </div>
+            `;
+        });
+        displayReviews.innerHTML = reviewsHtml;
+    }
+}
 
     function getStars(rating) {
         const fullStar = '★';
