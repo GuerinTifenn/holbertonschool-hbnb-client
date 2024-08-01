@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // All places part //
     if (document.getElementById('places-list')) {
-        let places = []
+        let places = [];
 
         // Récupère les lieux avec le token dans l'en-tête Authorization
         async function fetchPlaces(token) {
@@ -113,6 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Fonction pour récupérer l'ID de l'URL
     function getIdFromUrl() {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get('id');
